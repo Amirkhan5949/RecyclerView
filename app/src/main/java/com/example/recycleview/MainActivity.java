@@ -43,5 +43,9 @@ public class MainActivity extends AppCompatActivity {
         list.add(new User("https://cdn.pixabay.com/photo/2015/12/09/04/27/a-single-person-1084191_960_720.jpg","Aamir khan","I really like you"));
 
         recyclerView.setAdapter(new UserAdapter(this,list));
+
+
+        //fbvjkdf
+
     }
 }
