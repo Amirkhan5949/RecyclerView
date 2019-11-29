@@ -1,16 +1,24 @@
 package com.example.recycleview.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Layout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.recycleview.ImageActivity;
 import com.example.recycleview.R;
 import com.example.recycleview.model.User;
+import com.example.recycleview.utils.Common;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -41,7 +49,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         final User user=list.get(position);
         holder.name.setText(user.getName());
         holder.status.setText(user.getStatus());
-        //Picasso.get().load(user.getImage()).into(holder.imageView);
+
         Picasso.get().load(user.getImage()).into(holder.imageView);
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +58,38 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             }
         });
 
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogPlus dialog = DialogPlus.newDialog(context)
+                        .setGravity(Gravity.CENTER)
+                        .setContentHeight(Common.dpToPx(context,280))
+                        .setContentWidth(Common.dpToPx(context,260))
+                        .setExpanded(false)
+                        .setContentHolder(new ViewHolder(R.layout.content))
+                        .create();
+
+                RelativeLayout layout = (RelativeLayout)dialog.getHolderView();
+
+                ImageView imageView = layout.findViewById(R.id.image);
+                TextView textView = layout.findViewById(R.id.name);
+
+                textView.setText(user.getName());
+                Picasso.get().load(user.getImage()).into(imageView);
+
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context, ImageActivity.class);
+                        intent.putExtra("image",user.getImage());
+                        context.startActivity(intent);
+                    }
+                });
+
+                dialog.show();
+            }
+        });
 
 
     }
